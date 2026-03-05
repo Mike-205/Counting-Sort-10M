@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Random;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -16,7 +17,21 @@ public class DataGenerator {
         return arr;
     }
 
+    // Ensure the parent folder exists
+    public static void ensureFolderExists(String filepath) {
+        File file = new File(filepath);
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            if (parent.mkdirs()) {
+                System.out.println("Created folder: " + parent.getAbsolutePath());
+            } else {
+                System.out.println("Failed to create folder: " + parent.getAbsolutePath());
+            }
+        }
+    }
+
     public static void saveToFile(int[] arr, String filename) {
+        ensureFolderExists(filename); // <-- modular check
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
 
             for (int num : arr) {
